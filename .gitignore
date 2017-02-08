@@ -1,0 +1,10 @@
+a.exe
+a.exe.stackdump
+CMakeLists.txt
+cmake-build-debug
+.idea
+.idea/vcs.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/AlgorithmEngineering.iml
