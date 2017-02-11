@@ -6,9 +6,8 @@
 using namespace std;
 
 // Limit 518869 ?
-const int arraySize = 518869; // long?
-int unsortedNumbers[arraySize];
-int indexInArray = 0;
+//const int arraySize = 10; // long?
+//int unsortedNumbers[arraySize];
 
 // create buckets from 0 - 9
 // find number of digits in biggest number - done
@@ -31,20 +30,17 @@ void printElementsInArray(int array[], int sizeOfArray) {
     cout << "" << endl;
 }
 
-int addBucketToArray(int *array, queue<int> &bucket) {
+int addBucketToArray(int *array, queue<int> &bucket, int index) {
     while (!bucket.empty()) {
-        array[indexInArray] = bucket.front();
+        array[index] = bucket.front();
         bucket.pop();
-        indexInArray++;
+        index++;
     }
+
+    return index;
 }
 
-int main() {
-    int unsortedNumbers[arraySize];
-    // Populate array with random numbers between 0 and arraySize
-    for (int i = 0; i < arraySize; i++)
-        unsortedNumbers[i] = rand() % arraySize;
-
+void radixSort(int *unsortedNumbers, int arraySize){
     int biggestNumber = unsortedNumbers[0];
 
     ////// RADIX SORT STARTS HERE ///////
@@ -56,7 +52,7 @@ int main() {
             biggestNumber = unsortedNumbers[i];
     }
 
-    //printElementsInArray(unsortedNumbers, arraySize);
+//    printElementsInArray(unsortedNumbers, arraySize);
 
     // Get number of digits in the biggest number
     int numberOfDigits = getNumberOfDigits(biggestNumber);
@@ -126,22 +122,22 @@ int main() {
         n = n * 10;
 
         // clear array and add, or overwrite old entries
-        addBucketToArray(unsortedNumbers, bucket_0);
-        addBucketToArray(unsortedNumbers, bucket_1);
-        addBucketToArray(unsortedNumbers, bucket_2);
-        addBucketToArray(unsortedNumbers, bucket_3);
-        addBucketToArray(unsortedNumbers, bucket_4);
-        addBucketToArray(unsortedNumbers, bucket_5);
-        addBucketToArray(unsortedNumbers, bucket_6);
-        addBucketToArray(unsortedNumbers, bucket_7);
-        addBucketToArray(unsortedNumbers, bucket_8);
-        addBucketToArray(unsortedNumbers, bucket_9);
+        int elementsInserted = 0;
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_0, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_1, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_2, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_3, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_4, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_5, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_6, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_7, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_8, elementsInserted);
+        elementsInserted = addBucketToArray(unsortedNumbers, bucket_9, elementsInserted);
 
-        indexInArray = 0;
     }
 
 
-    //printElementsInArray(unsortedNumbers, arraySize);
+//    printElementsInArray(unsortedNumbers, arraySize);
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 
@@ -149,5 +145,17 @@ int main() {
     cout << "Radix sort took: " << elapsed_secs << " seconds" << endl;
     cout << "Biggest number: " << biggestNumber << endl;
     cout << "Number of digits: " << +numberOfDigits << endl;
+}
+
+int main() {
+    int arraySize = 1000;
+    int unsortedNumbers[arraySize];
+
+    // Populate array with random numbers between 0 and arraySize
+    for (int i = 0; i < arraySize; i++)
+        unsortedNumbers[i] = rand() % arraySize;
+
+    radixSort(unsortedNumbers, arraySize);
+
     return 0;
 };

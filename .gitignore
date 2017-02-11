@@ -8,3 +8,5 @@ cmake-build-debug
 .idea/modules.xml
 .idea/workspace.xml
 .idea/AlgorithmEngineering.iml
+Dr.Memory.txt
+myapp.exe
