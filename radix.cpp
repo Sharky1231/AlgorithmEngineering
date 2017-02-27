@@ -2,16 +2,21 @@
 #include <cstdlib>
 #include <ctime>
 #include <queue>
+#include <cstdio>
 
 using namespace std;
 
 // Limit 518869 ?
-//const int arraySize = 10; // long?
+//
+
+//const int arraySize = 2048;
+//int unsortedNumbers[arraySize];
 //int unsortedNumbers[arraySize];
 
 // create buckets from 0 - 9
 // find number of digits in biggest number - done
 // if there are N digits, then we perform N repetitions
+
 
 int getNumberOfDigits(int number) {
     int digits = 1;
@@ -45,6 +50,8 @@ void radixSort(int *unsortedNumbers, int arraySize){
 
     ////// RADIX SORT STARTS HERE ///////
     clock_t begin = clock();
+    //CALLGRIND_ZERO_STATS ;
+    //CALLGRIND_START_INSTRUMENTATION ;
 
     // Find biggest number
     for (int i = 0; i < arraySize; i++) {
@@ -137,9 +144,13 @@ void radixSort(int *unsortedNumbers, int arraySize){
     }
 
 
-//    printElementsInArray(unsortedNumbers, arraySize);
+
+    //CALLGRIND_STOP_INSTRUMENTATION ;
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    char msg[100];
+    sprintf(msg,"%d %f",arraySize,elapsed_secs);
+    //CALLGRIND_DUMP_STATS_AT(msg) ;
 
     cout << "\n----Results----- " << endl;
     cout << "Radix sort took: " << elapsed_secs << " seconds" << endl;
@@ -147,15 +158,23 @@ void radixSort(int *unsortedNumbers, int arraySize){
     cout << "Number of digits: " << +numberOfDigits << endl;
 }
 
-int main() {
-    int arraySize = 1000;
-    int unsortedNumbers[arraySize];
-
-    // Populate array with random numbers between 0 and arraySize
-    for (int i = 0; i < arraySize; i++)
-        unsortedNumbers[i] = rand() % arraySize;
-
-    radixSort(unsortedNumbers, arraySize);
-
-    return 0;
-};
+//int main() {
+//
+//    // runtime stack
+//    int start = 1024;
+//
+//    for(int s = 0; s < 5; s++){
+//        const int arraySize = start;
+//        int unsortedNumbers[arraySize];
+//
+//        // Populate array with random numbers between 0 and arraySize
+//        for (int i = 0; i < arraySize; i++)
+//            unsortedNumbers[i] = rand() % arraySize;
+//
+//        radixSort(unsortedNumbers, arraySize);
+//
+//        start = start * 2;
+//    }
+//
+//    return 0;
+//};
