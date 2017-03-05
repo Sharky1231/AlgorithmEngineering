@@ -1,16 +1,17 @@
+//#include </usr/local/include/valgrind/callgrind.h>
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
 #include <queue>
 #include <cstdio>
+#include <cmath>
 
 using namespace std;
 
 // Limit 518869 ?
 //
 
-//const int arraySize = 2048;
-//int unsortedNumbers[arraySize];
+
 //int unsortedNumbers[arraySize];
 
 // create buckets from 0 - 9
@@ -35,9 +36,9 @@ void printElementsInArray(int array[], int sizeOfArray) {
     cout << "" << endl;
 }
 
-int addBucketToArray(int *array, queue<int> &bucket, int index) {
+int addBucketToArray(vector<int> vector, queue<int> &bucket, int index) {
     while (!bucket.empty()) {
-        array[index] = bucket.front();
+        vector.at(index) = bucket.front();
         bucket.pop();
         index++;
     }
@@ -45,8 +46,11 @@ int addBucketToArray(int *array, queue<int> &bucket, int index) {
     return index;
 }
 
-void radixSort(int *unsortedNumbers, int arraySize){
-    int biggestNumber = unsortedNumbers[0];
+void radixSort(vector<int> unsortedNumbers, int vectorSize){
+    for (int i = 0; i < vectorSize; i++)
+        unsortedNumbers.at(i) = rand() % vectorSize;
+
+    int biggestNumber = unsortedNumbers.at(0);
 
     ////// RADIX SORT STARTS HERE ///////
     clock_t begin = clock();
@@ -54,12 +58,12 @@ void radixSort(int *unsortedNumbers, int arraySize){
     //CALLGRIND_START_INSTRUMENTATION ;
 
     // Find biggest number
-    for (int i = 0; i < arraySize; i++) {
-        if (unsortedNumbers[i] > biggestNumber)
-            biggestNumber = unsortedNumbers[i];
+    for (int i = 0; i < vectorSize; i++) {
+        if (unsortedNumbers.at(i) > biggestNumber)
+            biggestNumber = unsortedNumbers.at(i);
     }
 
-//    printElementsInArray(unsortedNumbers, arraySize);
+//    printElementsInArray(unsortedNumbers, vectorSize);
 
     // Get number of digits in the biggest number
     int numberOfDigits = getNumberOfDigits(biggestNumber);
@@ -83,8 +87,8 @@ void radixSort(int *unsortedNumbers, int arraySize){
 
     for (int i = 0; i < numberOfDigits; i++) {
 
-        for (int j = 0; j < arraySize; j++) {
-            int element = unsortedNumbers[j];
+        for (int j = 0; j < vectorSize; j++) {
+            int element = unsortedNumbers.at(j);
             int mod = element % m;
             int reminder = mod / n;
 
@@ -144,12 +148,12 @@ void radixSort(int *unsortedNumbers, int arraySize){
     }
 
 
-
+//    printElementsInArray(unsortedNumbers, arraySize);
     //CALLGRIND_STOP_INSTRUMENTATION ;
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
     char msg[100];
-    sprintf(msg,"%d %f",arraySize,elapsed_secs);
+    sprintf(msg,"%d %f",vectorSize,elapsed_secs);
     //CALLGRIND_DUMP_STATS_AT(msg) ;
 
     cout << "\n----Results----- " << endl;
@@ -158,23 +162,22 @@ void radixSort(int *unsortedNumbers, int arraySize){
     cout << "Number of digits: " << +numberOfDigits << endl;
 }
 
-//int main() {
-//
-//    // runtime stack
-//    int start = 1024;
-//
-//    for(int s = 0; s < 5; s++){
-//        const int arraySize = start;
-//        int unsortedNumbers[arraySize];
-//
-//        // Populate array with random numbers between 0 and arraySize
-//        for (int i = 0; i < arraySize; i++)
-//            unsortedNumbers[i] = rand() % arraySize;
-//
-//        radixSort(unsortedNumbers, arraySize);
-//
-//        start = start * 2;
-//    }
-//
-//    return 0;
-//};
+int vectorSize = 1000;
+vector<int> unsortedNumbers(vectorSize);
+
+
+int main() {
+
+
+
+    // Populate array with random numbers between 0 and arraySize
+
+    for (int i = 0; i < 50; i++) {
+        radixSort(unsortedNumbers, vectorSize);
+        vectorSize = vectorSize + 1000;
+        unsortedNumbers.resize(vectorSize);
+    }
+
+
+    return 0;
+};
