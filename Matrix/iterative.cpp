@@ -150,13 +150,14 @@ vector < vector < int > > multiplyMatrices_basic( vector < vector < int > > matr
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 	int numberOfElements = rowsLeft * coloumnsLeft + rowsRight * coloumnsRight;
     char msg[100];
-    sprintf(msg,"%d %f", numberOfElements, elapsed_secs);
+    sprintf(msg,"1 %d %f", numberOfElements, elapsed_secs);
     CALLGRIND_DUMP_STATS_AT(msg);
 
     cout << "\n----Results----- " << endl;
     cout << "Matrix multiplication took: " << elapsed_secs << " seconds" << endl;
 	cout << "Matrix A size: " << rowsLeft << "x" << coloumnsLeft << "\n";
 	cout << "Matrix B size: " << rowsRight << "x" << coloumnsRight << "\n";
+	cout << "Elements: " << numberOfElements << endl;
 	return res;
 }
 
@@ -170,11 +171,7 @@ void multiplyMatrices_recursive( vector < vector < int > > &matrixLeft,  vector 
 	int coloumnsLeft = endLeft_coloumns - startLeft_coloumns;
 	int coloumnsRight = endRight_coloumns - startRight_coloumns;
 
-	int maxNum = max(max(rowsLeft, coloumnsLeft), coloumnsRight); 
-
-	if (maxNum == 1) {
-		matrixRes[startRes_rows] [startRes_coloumns] += matrixLeft[startLeft_rows][startLeft_coloumns] * matrixRight[startRight_rows][startRight_coloumns];		
-	} else if (maxNum == rowsLeft) {
+	if (rowsLeft > 1) {
 	
 		//Split A horizontally, Multiply both with B
 		int splitPoint = (startLeft_rows + endLeft_rows) / 2;
@@ -187,7 +184,7 @@ void multiplyMatrices_recursive( vector < vector < int > > &matrixLeft,  vector 
 			splitPoint, endLeft_rows, startLeft_coloumns, endLeft_coloumns, 
 			startRight_rows, endRight_rows, startRight_coloumns, endRight_coloumns,
 			splitPointRes, endRes_rows, startRes_coloumns, endRes_coloumns); 
-	} else if (maxNum == coloumnsLeft) {
+	} else if (coloumnsLeft > 1) {
 		//Split A vertically, B Horizontally, multiply and add
 		int splitPointA = (startLeft_coloumns + endLeft_coloumns) / 2;
 		int splitPointB = (startRight_rows + endRight_rows) / 2;
@@ -201,7 +198,7 @@ void multiplyMatrices_recursive( vector < vector < int > > &matrixLeft,  vector 
 			splitPointB, endRight_rows, startRight_coloumns, endRight_coloumns,
 			startRes_rows, endRes_rows, startRes_coloumns, endRes_coloumns);
 
-	} else {
+	} else if (coloumnsRight > 1) {
 	 
 		//Split B vertically, multiply both by A
 
@@ -217,7 +214,9 @@ void multiplyMatrices_recursive( vector < vector < int > > &matrixLeft,  vector 
 			startRight_rows, endRight_rows, splitPoint, endRight_coloumns,
 			startRes_rows, endRes_rows, splitPointRes, endRes_coloumns);
 
-	} 
+	} else {
+		matrixRes[startRes_rows] [startRes_coloumns] += matrixLeft[startLeft_rows][startLeft_coloumns] * matrixRight[startRight_rows][startRight_coloumns];		
+	}
 	return;
 }
 
@@ -253,7 +252,7 @@ int main( int argc, const char* argv[] ) {
 	vector< vector < int > > A, B, res;
 	// A * B
 	// A = m * n, B = n * p
-	int tests = 300;
+	int tests = 100;
 	while (i <= tests) {
 
 		/*if (i <= tests/4)
@@ -289,9 +288,9 @@ int main( int argc, const char* argv[] ) {
 
 		res = makeZeroMatrix(m, p);
 		//printMatrix(res);
-		multiplyMatrices_recursive_callgrind(A, B, res, m, n, p);
+		//multiplyMatrices_recursive_callgrind(A, B, res, m, n, p);
 		//res = multiplyMatrices_recursive(A, B, res, 0, m, 0, n, 0, n, 0, p, 0, m, 0, p);
-		//res = multiplyMatrices_basic(A, B);
+		res = multiplyMatrices_basic(A, B);
 		++i;
 		cout << "i: " <<  i << "\n";
 	}

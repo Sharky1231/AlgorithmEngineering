@@ -27,10 +27,10 @@ set output "binaryDataReads.pdf"
 set xlabel "number of elements"
 set ylabel "number of Data Reads"
 
-plot "binary.data" using 1:3 with linespoints pointtype 7 title "data reads"
+plot "binary.data" using 1:4 with linespoints pointtype 7 title "data reads"
 
 set output "binaryDataWrites.pdf"
 set xlabel "number of elements"
 set ylabel "number of Data Writes"
 
-plot "binary.data" using 1:3 with linespoints pointtype 7 title "data writes"
+plot "binary.data" using 1:5 with linespoints pointtype 7 title "data writes"

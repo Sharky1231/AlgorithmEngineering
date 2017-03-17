@@ -5,13 +5,17 @@ all : matrix.pdf
 clean : 
 	rm -f callgrind.out.* *~ matrix-experiments.done matrix matrix.data *.pdf
 
-matrix : matrix.cpp
-	g++ -g -O0 -fopenmp matrix.cpp -o matrix
+matrix : recurs.cpp iterative.cpp transpose.cpp
+	g++ -g -O0 -fopenmp recurs.cpp -o recurs
+	g++ -g -O0 -fopenmp iterative.cpp -o iterative
+	g++ -g -O0 -fopenmp transpose.cpp -o transpose
 
 matrix-experiments.done : matrix
 	rm -f callgrind.out.*
 	touch matrix-experiments.done
-	$(VALGRIND) ./matrix
+	$(VALGRIND) ./recurs
+	$(VALGRIND) ./iterative
+	$(VALGRIND) ./transpose
 
 matrix.data : matrix-experiments.done
 	rm -f matrix.data 
@@ -19,7 +23,7 @@ matrix.data : matrix-experiments.done
 	   do echo `cat $$f | egrep "Client|totals" \
 	            | sed -e 's/.*: *//' \
 	            | tr '\n' ' '` >> matrix.data; done
-	sort -n matrix.data > matrix.data.tmp
+	sort -k1,1 -k2n matrix.data > matrix.data.tmp
 	mv matrix.data.tmp matrix.data
 
 matrix.pdf : matrix.data matrix.gnuplot

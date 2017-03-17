@@ -150,7 +150,7 @@ vector < vector < int > > multiplyMatrices_basic( vector < vector < int > > matr
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 	int numberOfElements = rowsLeft * coloumnsLeft + rowsRight * coloumnsRight;
     char msg[100];
-    sprintf(msg,"%d %f", numberOfElements, elapsed_secs);
+    sprintf(msg,"2 %d %f", numberOfElements, elapsed_secs);
     CALLGRIND_DUMP_STATS_AT(msg);
 
     cout << "\n----Results----- " << endl;
@@ -233,7 +233,7 @@ const int &m, const int &n, const int &p) {
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 	int numberOfElements = m * n + n * p;
     char msg[100];
-    sprintf(msg,"%d %f", numberOfElements, elapsed_secs);
+    sprintf(msg,"2 %d %f", numberOfElements, elapsed_secs);
     CALLGRIND_DUMP_STATS_AT(msg);
 
 	return res;
@@ -251,7 +251,7 @@ int main( int argc, const char* argv[] ) {
 	vector< vector < int > > A, B, res;
 	// A * B
 	// A = m * n, B = n * p
-	int tests = 300;
+	int tests = 100;
 	while (i <= tests) {
 
 		/*if (i <= tests/4)
