@@ -14,3 +14,4 @@ cachegrind*
 vgcore*
 Valgrind.txt
 radix
+*pdf
