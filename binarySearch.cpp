@@ -7,9 +7,13 @@
 #include <ctime>
 #include <queue>
 #include <cstdio>
+#include <algorithm>
+#include </usr/local/include/valgrind/callgrind.h>
 
 using namespace std;
 
+
+static int arraySize = 20000;
 
 int findMiddle(int min, int max){
     if((min + max) % 2 == 0){
@@ -21,7 +25,13 @@ int findMiddle(int min, int max){
 
 }
 
+
+
+
 int binarySearch(int* array, int min, int max, int target){
+
+   
+
     int middleIndex = findMiddle(min, max);
 
     if(min == max){
@@ -45,14 +55,30 @@ int binarySearch(int* array, int min, int max, int target){
 }
 
 
+int binarySearch_callgrind(int* array, int min, int max, int target) {
+    
+    clock_t begin = clock();
+    CALLGRIND_ZERO_STATS;
+    CALLGRIND_START_INSTRUMENTATION;
+    
+    CALLGRIND_STOP_INSTRUMENTATION;
+    clock_t end = clock();
+    double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+    char msg[100];
+    sprintf(msg,"%d %f", numberOfElements, elapsed_secs);
+    CALLGRIND_DUMP_STATS_AT(msg);
+}
+
+
 
 int main() {
-    int arraySize = 2000;
-    int sortedNumbers[arraySize];
+
+    int numbers[arraySize];
 
     for (int i = 0; i < arraySize; i++)
-        sortedNumbers[i] = i;
+        numbers[i] = rand();
 
+    numbers = sort(numbers, numbers + arraySize);
     int position = binarySearch(sortedNumbers, 0, arraySize, 1332);
 
     cout << "Position: " << position << endl;
