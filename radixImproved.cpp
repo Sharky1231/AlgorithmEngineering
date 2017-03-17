@@ -47,16 +47,9 @@ int addBucketToArray(vector<int>* tempVector, queue<int> &bucket, int index) {
     return index;
 }
 
-void LSD_radix_sort(vector<int>* numbersVector){
+void LSD_radix_sort(vector<int>* numbersVector, int biggestNumber){
     // RADIX SORT REPEAT AS MANY TIMES AS THERE ARE MSD BUCKETS
 
-    int biggestNumber = numbersVector->at(0);
-
-    // Find biggest number
-    for (int i = 0; i < numbersVector->size(); i++) {
-        if (numbersVector->at(i) > biggestNumber)
-            biggestNumber = numbersVector->at(i);
-    }
 
     // Get number of digits in the biggest number
     int numberOfDigits = getNumberOfDigits(biggestNumber);
@@ -149,10 +142,8 @@ void LSD_radix_sort(vector<int>* numbersVector){
         elementsInserted = addBucketToArray(&tempVector, bucket_9, elementsInserted);
     }
 
-    for(int i = 0; i < numbersVector->size(); i++){
-        numbersVector->at(i) = tempVector.at(i);
-    }
-
+    numbersVector = &tempVector;
+    numbersVector->at(0);
 }
 
 void radixSort(vector<int> unsortedNumbers, int vectorSize){
@@ -176,6 +167,7 @@ void radixSort(vector<int> unsortedNumbers, int vectorSize){
     int numberOfDigits = getNumberOfDigits(biggestNumber);
 
     vector< vector<int> > digitGroups(10, vector<int>());
+    vector<int> biggestNumbers(10, 0);
     int divideBy = ceil(pow(10, numberOfDigits));
     int andA = divideBy / 10;
 
@@ -187,46 +179,86 @@ void radixSort(vector<int> unsortedNumbers, int vectorSize){
         // push back vs insert?
         switch (reminder) {
             case 0:
+            {
+                if(element > biggestNumbers.at(0))
+                    biggestNumbers.at(0) = element;
                 digitGroups[0].push_back(element);
                 break;
+            }
             case 1:
+            {
+                if(element > biggestNumbers.at(1))
+                    biggestNumbers.at(1) = element;
                 digitGroups[1].push_back(element);
                 break;
+            }
             case 2:
+            {
+                if(element > biggestNumbers.at(2))
+                    biggestNumbers.at(2) = element;
                 digitGroups[2].push_back(element);
                 break;
+            }
             case 3:
+            {
+                if(element > biggestNumbers.at(3))
+                    biggestNumbers.at(3) = element;
                 digitGroups[3].push_back(element);
                 break;
+            }
             case 4:
+            {
+                if(element > biggestNumbers.at(4))
+                    biggestNumbers.at(4) = element;
                 digitGroups[4].push_back(element);
                 break;
+            }
             case 5:
+            {
+                if(element > biggestNumbers.at(5))
+                    biggestNumbers.at(5) = element;
                 digitGroups[5].push_back(element);
                 break;
+            }
             case 6:
+            {
+                if(element > biggestNumbers.at(6))
+                    biggestNumbers.at(6) = element;
                 digitGroups[6].push_back(element);
                 break;
+            }
             case 7:
+            {
+                if(element > biggestNumbers.at(7))
+                    biggestNumbers.at(7) = element;
                 digitGroups[7].push_back(element);
                 break;
+            }
             case 8:
+            {
+                if(element > biggestNumbers.at(8))
+                    biggestNumbers.at(8) = element;
                 digitGroups[8].push_back(element);
                 break;
+            }
             case 9:
+            {
+                if(element > biggestNumbers.at(9))
+                    biggestNumbers.at(9) = element;
                 digitGroups[9].push_back(element);
                 break;
+            }
             default:
                 break;
         }
 
     }
 
-//    omp_set_num_threads(4);
-//#pragma omp parallel
+//omp_set_num_threads(1);
+#pragma omp parallel
     for(int i = 0; i < digitGroups.size(); i++){
         if(digitGroups[i].size() > 0)
-            LSD_radix_sort(&digitGroups[i]);
+            LSD_radix_sort(&digitGroups[i], biggestNumbers.at(i));
     }
 
 //    printElementsInArray(unsortedNumbers, arraySize);
@@ -243,7 +275,7 @@ void radixSort(vector<int> unsortedNumbers, int vectorSize){
     cout << "Number of digits: " << +numberOfDigits << endl;
 }
 
-int vectorSize = 1000;
+int vectorSize = 1000000;
 vector<int> unsortedNumbers(vectorSize);
 
 
@@ -253,7 +285,7 @@ int main() {
 //    cout << (int)14%100/10 <<  endl;
     // Populate array with random numbers between 0 and arraySize
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 1; i++) {
         radixSort(unsortedNumbers, vectorSize);
         vectorSize = vectorSize + 1000;
         unsortedNumbers.resize(vectorSize);
