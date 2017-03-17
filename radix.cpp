@@ -162,7 +162,7 @@ void radixSort(vector<int> unsortedNumbers, int vectorSize){
     cout << "Number of digits: " << +numberOfDigits << endl;
 }
 
-int vectorSize = 1000;
+int vectorSize = 50000;
 vector<int> unsortedNumbers(vectorSize);
 
 
@@ -172,7 +172,7 @@ int main() {
 
     // Populate array with random numbers between 0 and arraySize
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 1; i++) {
         radixSort(unsortedNumbers, vectorSize);
         vectorSize = vectorSize + 1000;
         unsortedNumbers.resize(vectorSize);
