@@ -9,7 +9,7 @@
 using namespace std;
 
 
-static int maxSize = 1800000;
+static int maxSize = 1000000;
 static int maxNumber = maxSize*100;
 
 int findMiddle(int min, int max){
