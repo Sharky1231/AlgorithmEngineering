@@ -5,15 +5,19 @@ all : matrix.pdf
 clean : 
 	rm -f callgrind.out.* *~ matrix-experiments.done matrix matrix.data *.pdf
 
-matrix : recurs.cpp iterative.cpp transpose.cpp
-	g++ -g -O0 -fopenmp recurs.cpp -o recurs
+matrix : recurs1.cpp recurs2.cpp recurs3.cpp iterative.cpp transpose.cpp
+	g++ -g -O0 -fopenmp recurs1.cpp -o recurs1
+	g++ -g -O0 -fopenmp recurs2.cpp -o recurs2
+	g++ -g -O0 -fopenmp recurs3.cpp -o recurs3
 	g++ -g -O0 -fopenmp iterative.cpp -o iterative
 	g++ -g -O0 -fopenmp transpose.cpp -o transpose
 
 matrix-experiments.done : matrix
 	rm -f callgrind.out.*
 	touch matrix-experiments.done
-	$(VALGRIND) ./recurs
+	$(VALGRIND) ./recurs1
+	$(VALGRIND) ./recurs2
+	$(VALGRIND) ./recurs3
 	$(VALGRIND) ./iterative
 	$(VALGRIND) ./transpose
 

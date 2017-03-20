@@ -174,14 +174,14 @@ vector < vector < int > > multiplyMatrices_transpose(vector < vector < int > > A
 
 	vector < vector < int > > res = makeZeroMatrix(rowsLeft, coloumnsRight);
 
-	vector < vector < int > > C = transposeMatrix(B);
+	
 
 	clock_t begin = clock();
     CALLGRIND_ZERO_STATS;
     CALLGRIND_START_INSTRUMENTATION;
 
 	
-	
+	vector < vector < int > > C = transposeMatrix(B);
 
 	for(int i = 0; i < rowsLeft ; ++i)
 	{
@@ -199,7 +199,7 @@ vector < vector < int > > multiplyMatrices_transpose(vector < vector < int > > A
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 	int numberOfElements = rowsLeft * coloumnsLeft + rowsRight * coloumnsRight;
     char msg[100];
-    sprintf(msg,"3 %d %f", numberOfElements, elapsed_secs);
+    sprintf(msg,"2 %d %f", numberOfElements, elapsed_secs);
     CALLGRIND_DUMP_STATS_AT(msg);
 
 	cout << "\n----Results----- " << endl;
@@ -224,27 +224,33 @@ int main( int argc, const char* argv[] ) {
 	vector< vector < int > > A, B, res;
 	// A * B
 	// A = m * n, B = n * p
-	int tests = 100;
-	while (i <= tests) {
+	int maxSize = 1000;
+	int increment = 50;
+	while (i <= maxSize) {
 
 		
-		cout << "m: " << m << "\n"; 
-		cout << "n: " << n << "\n";
-		cout << "p: " << p << "\n";  
+
 		A = makeRandomMatrix(m, n);
 		B = makeRandomMatrix(n, p);  
 
 		switch (i % 3) {
 			case 0 : 
-				++m;
+				m += increment;
 				break;
 			case 1 : 
-				++n;
+				n += increment;
 				break;
 			case 2 : 
-				++p;
+				p += increment;
 				break;
 		}
+
+		cout << "i: " <<  i << "\n";
+		i += 50;
+
+		cout << "m: " << m << "\n"; 
+		cout << "n: " << n << "\n";
+		cout << "p: " << p << "\n";  
 		//printMatrix(A);
 		//printMatrix(B);
 
@@ -256,8 +262,7 @@ int main( int argc, const char* argv[] ) {
 		//res = multiplyMatrices_recursive(A, B, res, 0, m, 0, n, 0, n, 0, p, 0, m, 0, p);
 		//res = multiplyMatrices_basic(A, B);
 		res = multiplyMatrices_transpose(A, B);
-		++i;
-		cout << "i: " <<  i << "\n";
+
 	}
 	
 	/*A = makeRandomMatrix(4, 2);

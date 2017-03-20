@@ -10,7 +10,7 @@ using namespace std;
 
 
 static int maxSize = 1000000;
-static int maxNumber = maxSize*100;
+static int maxNumber = maxSize;
 
 int findMiddle(int min, int max){
     if((min + max) % 2 == 0){
@@ -69,7 +69,7 @@ int main() {
 
     srand(time(0));
 
-    for (int j = 2; j < maxSize; j+=100000) {
+    for (int j = 2; j < maxSize; j+=10000) {
         numbers.resize(j);
 
         for (int i = 0; i < j; i++) {

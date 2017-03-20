@@ -8,8 +8,8 @@
 using namespace std;
 
 
-const int maxSize = 10000;
-const int maxNumber = 10000;
+const int maxSize = 1000000;
+const int maxNumber = 1000000;
 
 struct node {
     int value;
@@ -153,18 +153,8 @@ int main() {
 
     srand(time(0));
 
-    for (int j = 2; j < maxSize; j+=1000) {
+    for (int j = 2; j < maxSize; j+=10000) {
         btree *tree = new btree();
-
-        for (int i = 0; i < j; i++) {
-            int n = rand() % maxNumber;
-            tree->insert(n);
-        }
-
-        for (int i = 0; i < j; i++) {
-            int n = rand() % maxNumber;
-            tree->insert(n);
-        }
 
         for (int i = 0; i < j; i++) {
             int n = rand() % maxNumber;

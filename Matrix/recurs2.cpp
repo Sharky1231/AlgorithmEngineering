@@ -99,27 +99,27 @@ int startRows, int endRows, int startColoumns, int endColoumns) {
 
 //Basic matrix multiplication, assumes properly dimensioned matrices
 
-vector < vector < int > > multiplyMatrices_basic( vector < vector < int > > A,  vector < vector < int > > B )
+vector < vector < int > > multiplyMatrices_basic( vector < vector < int > > matrixLeft,  vector < vector < int > > matrixRight )
 {
 
-	vector<int> firstLeft = A[0];
-	vector<int> firstRight = B[0];
+	vector<int> firstLeft = matrixLeft[0];
+	vector<int> firstRight = matrixRight[0];
 
-	int rowsA  = A.size();
-	int coloumnsA = firstLeft.size();
-	int rowsB = B.size();
-	int coloumnsB = firstRight.size();
+	int rowsLeft  = matrixLeft.size();
+	int coloumnsLeft = firstLeft.size();
+	int rowsRight = matrixRight.size();
+	int coloumnsRight = firstRight.size();
 
 	int i, j, k;
 
 	vector< vector < int > > res;
-	res.resize(rowsA );
+	res.resize(rowsLeft );
 
 	// Initialize result matrix to correct size and filled with 0
-	for(i = 0; i < rowsA ; ++i)
+	for(i = 0; i < rowsLeft ; ++i)
 	{
-		res[i].resize(coloumnsB);
-		for(j = 0; j < coloumnsB; ++j)
+		res[i].resize(coloumnsRight);
+		for(j = 0; j < coloumnsRight; ++j)
 		{
 			res[i][j] = 0;
 		}
@@ -133,13 +133,13 @@ vector < vector < int > > multiplyMatrices_basic( vector < vector < int > > A,  
 
 	// Multiplying matrices
 	//#pragma omp parallel for
-	for(i = 0; i < rowsA ; ++i)
+	for(i = 0; i < rowsLeft ; ++i)
 	{
-		for(j = 0; j < coloumnsB; ++j)
+		for(j = 0; j < coloumnsRight; ++j)
 		{
-			for(k=0; k < rowsB; ++k)
+			for(k=0; k < rowsRight; ++k)
 			{
-				res[i][j] += A[i][k] * B[k][j];
+				res[i][j] += matrixLeft[i][k] * matrixRight[k][j];
 			}
 		}
 	} 
@@ -148,14 +148,15 @@ vector < vector < int > > multiplyMatrices_basic( vector < vector < int > > A,  
 	CALLGRIND_STOP_INSTRUMENTATION;
     clock_t end = clock();
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
-	int numberOfElements = rowsA * coloumnsA + rowsB * coloumnsB;
+	int numberOfElements = rowsLeft * coloumnsLeft + rowsRight * coloumnsRight;
     char msg[100];
-    sprintf(msg,"1 %d %f", numberOfElements, elapsed_secs);
+    sprintf(msg,"2 %d %f", numberOfElements, elapsed_secs);
     CALLGRIND_DUMP_STATS_AT(msg);
 
     cout << "\n----Results----- " << endl;
     cout << "Matrix multiplication took: " << elapsed_secs << " seconds" << endl;
-	cout << "Elements: " << numberOfElements << endl;
+	cout << "Matrix A size: " << rowsLeft << "x" << coloumnsLeft << "\n";
+	cout << "Matrix B size: " << rowsRight << "x" << coloumnsRight << "\n";
 	return res;
 }
 
@@ -232,7 +233,7 @@ const int &m, const int &n, const int &p) {
     double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
 	int numberOfElements = m * n + n * p;
     char msg[100];
-    sprintf(msg,"%d %f", numberOfElements, elapsed_secs);
+    sprintf(msg,"4 %d %f", numberOfElements, elapsed_secs);
     CALLGRIND_DUMP_STATS_AT(msg);
 
 	return res;
@@ -275,7 +276,6 @@ int main( int argc, const char* argv[] ) {
 		}
 		
 		cout << "i: " <<  i << "\n";
-
 		i += 50;
 		
 		cout << "m: " << m << "\n"; 
@@ -291,10 +291,10 @@ int main( int argc, const char* argv[] ) {
 
 		res = makeZeroMatrix(m, p);
 		//printMatrix(res);
-		//multiplyMatrices_recursive_callgrind(A, B, res, m, n, p);
+		multiplyMatrices_recursive_callgrind(A, B, res, m, n, p);
 		//res = multiplyMatrices_recursive(A, B, res, 0, m, 0, n, 0, n, 0, p, 0, m, 0, p);
-		res = multiplyMatrices_basic(A, B);;
-		
+		//res = multiplyMatrices_basic(A, B);
+
 	}
 	
 	/*A = makeRandomMatrix(4, 2);
