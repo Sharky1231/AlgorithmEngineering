@@ -25,7 +25,7 @@ binary.data : binary-experiments.done
 	   do echo `cat $$f | egrep "Client|totals" \
 	            | sed -e 's/.*: *//' \
 	            | tr '\n' ' '` >> binary.data; done
-	sort -n binary.data > binary.data.tmp
+	sort -k1,1 -k2n binary.data > binary.data.tmp
 	mv binary.data.tmp binary.data
 
 binary.pdf : binary.data binary.gnuplot
